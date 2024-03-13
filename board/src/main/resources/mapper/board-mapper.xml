@@ -4,15 +4,32 @@
 
 <mapper namespace="com.example.board.board.mapper.BoardMapper">
 	
-	<select id="getBoardList" parameterType="" resultType="BoardVO">
-		SELECT * FROM ( SELECT ROWNUM AS rn, a.* FROM (
-            SELECT b.*
-            FROM board b
-            WHERE title LIKE '%#{title}%'
-            AND content LIKE '%#{content}%'
-            AND writer LIKE '%#{writer}%'
+	<sql id="searchCondi">
+		<where>
+			<if test="bvo.title != null">
+	            title LIKE '%'||#{bvo.title}||'%'
+			</if>
+			<if test="bvo.content != null">
+	            AND content LIKE '%'||#{bvo.content}||'%'
+			</if>
+			<if test="bvo.writer != null">
+	            AND writer LIKE '%'#{bvo.writer}||'%'
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="getBoardList" resultType="BoardVO">
+		SELECT * FROM ( SELECT ROWNUM AS rn, a.* FROM ( 
+			SELECT BOARD_NO
+					, TITLE
+					, CONTENT
+					, WRITER
+					, WRITE_DATE
+			FROM board
+            <include refid="searchCondi"></include>
             ORDER BY board_no
-		) a WHERE ROWNUM <= 5 ) b WHERE rn > 0
+	<![CDATA[ ) a WHERE ROWNUM <= #{svo.end} ) b WHERE rn >= #{svo.start} ]]>
 	</select>
 	
 	<select id="getBoardInfo" parameterType="int" resultType="BoardVO">
@@ -21,11 +38,51 @@
 				, CONTENT
 				, WRITER
 				, WRITE_DATE
-				, CLICK_CNT
-				, IMAGE
 		FROM board
 		WHERE board_no = #{boardNo}
 	</select>
+	
+	<insert id="boardInsert" parameterType="BoardVO">
+		<selectKey keyProperty="boardNo"
+					order="BEFORE"
+					resultType="int">
+			SELECT board_seq.nextval FROM dual
+		</selectKey>
+		INSERT INTO board
+				(board_no
+				, title
+				, content
+				, writer
+			<if test="writeDate != null">
+				, write_date)				
+			</if>
+			<if test="writeDate == null">
+				, write_date)				
+			</if>
+		VALUES(
+				#{boardNo}
+				, #{title}
+				, #{content}
+				, #{writer}
+			<if test="writeDate != null">
+				, #{writeDate}
+			</if>
+			<if test="writeDate == null">
+				, sysdate
+			</if>
+				)
+	</insert>
+	
+	<update id="boardUpdate" parameterType="BoardVO">
+		UPDATE board
+		SET content = #{content}
+		WHERE board_no = #{boardNo}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE FROM board
+		WHERE board_no = #{boardNo}
+	</delete>
 	
 	
 </mapper>

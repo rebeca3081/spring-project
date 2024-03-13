@@ -1,10 +1,18 @@
 package com.example.board.board;
 
+import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BoardVO {
-	String boardNo;
+	int boardNo;
 	String title;
 	String content;
 	String writer;
