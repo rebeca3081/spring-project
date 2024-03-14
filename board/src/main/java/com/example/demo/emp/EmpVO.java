@@ -26,4 +26,5 @@ public class EmpVO { // 등록용 VO
 	Float comm;
 	String managerId;
 	String departmentId;
+	String photo;
 }

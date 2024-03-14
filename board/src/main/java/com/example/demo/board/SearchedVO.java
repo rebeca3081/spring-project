@@ -1,9 +1,9 @@
-package com.example.board.board;
+package com.example.demo.board;
 
 import lombok.Data;
 
 @Data
-public class SearchVO {
+public class SearchedVO {
 	int start = 0;
 	int end = 5;
 }

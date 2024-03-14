@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.board.board.mapper.BoardMapper;
+import com.example.demo.board.BoardVO;
+import com.example.demo.board.SearchedVO;
+import com.example.demo.board.mapper.BoardMapper;
 
 @SpringBootTest
 public class BoardMapperTest {
@@ -22,7 +24,7 @@ public class BoardMapperTest {
 							.writer("은")
 							.build();
 		
-		SearchVO svo = new SearchVO();
+		SearchedVO svo = new SearchedVO();
 							
 		List<BoardVO> list = mapper.getBoardList(bvo, svo);
 		

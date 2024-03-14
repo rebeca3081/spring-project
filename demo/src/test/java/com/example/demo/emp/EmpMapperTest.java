@@ -40,9 +40,9 @@ public class EmpMapperTest {
 		// 롬복 빌더
 		EmpVO vo = EmpVO.builder()
 						//.employeeId(301)
-						.lastName("hahahahah")
-						.email("test.goole.com")
-						.hireDate(new Date(2021,9,25))
+						.lastName("test0314")
+						.email("test3323.goole.com")
+						.hireDate(new Date())
 						.jobId("AD_VP")
 						.build();
 		
