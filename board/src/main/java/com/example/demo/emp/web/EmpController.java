@@ -1,9 +1,11 @@
 package com.example.demo.emp.web;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,13 +30,20 @@ public class EmpController {
 	
 	// 등록처리 ---> employees 테이블에 photo 컬럼 추가
 	@PostMapping("/insert")
-	public String insert(@ModelAttribute("emp") EmpVO vo,
-						MultipartFile photoFile) {
-		// 파일 업로드
+	public String insert(EmpVO vo, MultipartFile photoFile) throws IllegalStateException, IOException {
 		
+
+		// 파일 d:/upload 경로에 이미지 저장
+		File file = new File("d:/upload", photoFile.getOriginalFilename());
+		// 파일전송
+		photoFile.transferTo(file);
+		
+		// 파일 업로드
 		vo.setPhoto(photoFile.getOriginalFilename());
-		System.out.println(vo);
+		
+		// 사원정보 + 이미지 DB에저장
 		mapper.insertEmp(vo);
+		
 		return "redirect:/emp/list";
 	}
 	
@@ -56,7 +65,7 @@ public class EmpController {
 	// 목록페이지로 이동
 	@RequestMapping("/emp/list")
 	public String empList(Model model, EmpVO vo, SearchVO svo){ // Model : 데이터 전달자
-		System.out.println("tlwkr");
+		System.out.println(vo.getPhoto());
 		model.addAttribute("empList", mapper.getEmpList(vo, svo)); // reqest.setAttrubte와 동일
 		return "/emp/list"; // forward
 	}

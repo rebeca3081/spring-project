@@ -48,6 +48,7 @@
 			 , COMMISSION_PCT
 			 , MANAGER_ID
 			 , DEPARTMENT_ID
+			 , PHOTO
 		FROM employees e
 		<include refid="condition"></include>
 		ORDER BY employee_id desc
@@ -77,6 +78,9 @@
 				<if test="salary != null">
 					, SALARY
 				</if>
+				<if test="photo != null">
+					, PHOTO
+				</if>
 					, MANAGER_ID
 					, DEPARTMENT_ID)
 		VALUES (
@@ -88,6 +92,9 @@
 				, #{jobId}
 			<if test="salary != null">
 				, #{salary}				
+			</if>
+			<if test="photo != null">
+				, #{photo}
 			</if>
 				, #{managerId}
 				, #{departmentId}				

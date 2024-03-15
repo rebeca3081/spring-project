@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.emp.EmpVO;
+import com.example.demo.emp.SearchVO;
 import com.example.demo.emp.mapper.EmpMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -46,8 +48,9 @@ public class EmpController {
 	}
 	
 	@RequestMapping("/empList")
-	public String empList(Model model){ // Model : 데이터 전달자
-		model.addAttribute("empList", mapper.getEmpList(null, null)); // reqest.setAttrubte와 동일
+	public String empList(Model model, EmpVO vo, SearchVO svo){ // Model : 데이터 전달자
+		model.addAttribute("companyName", "<i><font color='red'>예담주식회사</font></i>");
+		model.addAttribute("empList", mapper.getEmpList(vo, svo)); // reqest.setAttrubte와 동일
 		return "empList"; // forward
 	}
 	
@@ -82,6 +85,18 @@ public class EmpController {
 		mv.addObject("insertResult", "success"); // model.addAttribute();
 		mv.setStatus(HttpStatus.INTERNAL_SERVER_ERROR); // 500 Error 상태값 넘겨줄 수 있음
 		return mv;
+	}
+	
+	@GetMapping("/update/{empId}")
+	public String update(@PathVariable int empId) {
+		System.out.println(empId);
+		return "index";
+	}
+	
+	@GetMapping("/delete")
+	public String delete(int employeeId, String name) {
+		System.out.println(employeeId + " : " + name);
+		return "index";
 	}
 	
 	@GetMapping("/")

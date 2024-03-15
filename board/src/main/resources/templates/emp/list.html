@@ -9,14 +9,17 @@
 	<table border="1">
 		<tr>
 			<th>employee_id</th>
-			<th>first_name</th>
 			<th>last_name</th>
+			<th>hire_date</th>
+			<th>photo</th>
 		</tr>
 		<tr th:each="emp : ${empList}">
 			<td th:text="${emp.employeeId}"></td>
-			<td th:text="${emp.firstName}"></td>
 			<td th:text="${emp.lastName}"></td>
 			<td th:text="${emp.hireDate}"></td>
+			<td>
+				<img th:src="@{/images/${emp.photo}.jpg}">
+			</td>
 		</tr>
 	</table>
 </body>
