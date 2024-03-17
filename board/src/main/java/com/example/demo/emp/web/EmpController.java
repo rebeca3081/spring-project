@@ -6,8 +6,10 @@ import java.io.IOException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.emp.EmpVO;
@@ -48,19 +50,47 @@ public class EmpController {
 	}
 	
 	// 수정페이지로 이동
-	@GetMapping("/emp/update")
-	public void update() {
+	@GetMapping("/emp/update") // eid=값
+	public void update(int eid, Model model) {
+		// 단건조회
+		EmpVO vo = mapper.getEmpInfo(eid);
 		
+		// emp/update.html로 데이터 전달
+		model.addAttribute("empInfo", vo);		
 	}
 	
 	// 수정처리
-	
+	@RequestMapping("/update")
+	public String update(EmpVO vo) {
+		System.out.println(vo + "=======================");
+		mapper.updateEmp(vo);
+		
+		return "redirect:/emp/list";
+	}
 	
 	// 삭제처리
-	
+	@GetMapping("/emp/delete/{employeeId}")
+	public String delete(@PathVariable int employeeId, Model model) {
+		
+		int result = mapper.deleteEmp(employeeId);
+		if(result > 0) {
+			model.addAttribute("retCode", "OK");		
+			return "redirect:/emp/list";
+		} else {
+			model.addAttribute("retCode", "FAIL");
+			return "redirect:/emp/list";
+		}
+		
+	}
 	
 	// 상세조회 페이지 이동
-	
+	@GetMapping("/emp/info/{employeeId}")
+	public String empInfo(@PathVariable int employeeId, Model model) {
+		EmpVO voInfo = mapper.getEmpInfo(employeeId);
+		model.addAttribute("empInfo", voInfo);
+		
+		return "/emp/info";
+	}
 	
 	// 목록페이지로 이동
 	@RequestMapping("/emp/list")
@@ -69,6 +99,10 @@ public class EmpController {
 		model.addAttribute("empList", mapper.getEmpList(vo, svo)); // reqest.setAttrubte와 동일
 		return "/emp/list"; // forward
 	}
+	
+	
+	
+	
 	
 	@GetMapping("/")
 	public String test() {

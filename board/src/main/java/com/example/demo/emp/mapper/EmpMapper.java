@@ -15,5 +15,6 @@ public interface EmpMapper {
 	EmpVO getEmpInfo(int employeeId); // 단건조회
 	int insertEmp(EmpVO empVO); // 등록 return in or void
 	int deleteEmp(int employeeId); // 삭제
+	int updateEmp(EmpVO empVO); // 수정
 	List<Map<String, Object>> getStat(); // 부서별 인원수 조회
 }

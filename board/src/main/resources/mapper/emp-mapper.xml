@@ -106,6 +106,12 @@
 		WHERE employee_id = #{employeeId}
 	</delete>
 	
+	<update id="updateEmp" parameterType="EmpVO">
+		UPDATE employees
+		SET email = #{email}
+		WHERE employee_id = #{employeeId}
+	</update>
+	
 	<select id="getStat" resultType="map">
 	SELECT e.department_id
 		 , d.department_name "name"

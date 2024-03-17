@@ -1,6 +1,7 @@
 package com.example.demo.emp;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,7 +20,7 @@ public class EmpVO { // 등록용 VO
 	String lastName;
 	String email;
 	String phone; //PHONE_NUMBER
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+//	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date hireDate;
 	String jobId;
 	Integer salary;
