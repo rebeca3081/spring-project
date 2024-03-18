@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.common.Paging;
 import com.example.demo.emp.EmpVO;
 import com.example.demo.emp.SearchVO;
 import com.example.demo.emp.mapper.EmpMapper;
@@ -48,8 +49,16 @@ public class EmpController {
 	}
 	
 	@RequestMapping("/empList")
-	public String empList(Model model, EmpVO vo, SearchVO svo){ // Model : 데이터 전달자
-		model.addAttribute("companyName", "<i><font color='red'>예담주식회사</font></i>");
+	public String empList(Model model, EmpVO vo, SearchVO svo,Paging pvo){ // Model : 데이터 전달자		
+		//페이징처리
+		pvo.setPageUnit(5); // 페이지당 데이터 수
+		pvo.setPageSize(3); // 페이지 번호 수
+		svo.setStart(pvo.getFirst());
+		svo.setEnd(pvo.getLast());
+		pvo.setTotalRecord(mapper.getCount(vo, svo));
+		model.addAttribute("paging", pvo);
+		
+		// 목록조회
 		model.addAttribute("empList", mapper.getEmpList(vo, svo)); // reqest.setAttrubte와 동일
 		return "empList"; // forward
 	}
@@ -85,6 +94,13 @@ public class EmpController {
 		mv.addObject("insertResult", "success"); // model.addAttribute();
 		mv.setStatus(HttpStatus.INTERNAL_SERVER_ERROR); // 500 Error 상태값 넘겨줄 수 있음
 		return mv;
+	}
+	
+	@GetMapping("/info/{empId}")
+	public String info(@PathVariable int empId, Model model) {
+		System.out.println(empId);
+		model.addAttribute("emp", mapper.getEmpInfo(empId));
+		return "empInfo";
 	}
 	
 	@GetMapping("/update/{empId}")

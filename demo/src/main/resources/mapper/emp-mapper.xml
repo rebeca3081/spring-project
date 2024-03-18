@@ -5,14 +5,14 @@
 <mapper namespace="com.example.demo.emp.mapper.EmpMapper">
 	<sql id="condition">
 		<where> 
-		<if test="vo.departmentId != null">
-			department_id = #{departmentId}
+		<if test="vo.departmentId != null and vo.departmentId">
+			department_id = #{vo.departmentId}
 		</if>
-		<if test="vo.firstName != null">
-			AND first_name = #{firstName}			
+		<if test="vo.firstName != null and vo.firstName != ''">
+			AND first_name LIKE '%' || #{vo.firstName}	|| '%'		
 		</if>
-		<if test="vo.managerId != null">
-			AND manager_id = #{managerId}
+		<if test="vo.managerId != null and vo.managerId != ''">
+			AND manager_id = #{vo.managerId}
 		</if>
 		<if test="svo.employeeIds != null">
 			AND employee_id 
@@ -33,6 +33,13 @@
 		<result property="phone" column="PHONE_NUMBER" />
 		<result property="comm" column="COMMISSION_PCT" />		
 	</resultMap>
+	
+	<select id="getCount" resultType="long">
+		SELECT COUNT(*)
+		FROM employees
+		<include refid="condition"></include>
+	</select>
+	
 
 	<select id="getEmpList" resultMap="empResultMap">
 	SELECT * FROM ( SELECT ROWNUM AS rn, a.* FROM (
@@ -50,7 +57,7 @@
 			 , DEPARTMENT_ID
 		FROM employees e
 		<include refid="condition"></include>
-		ORDER BY first_name
+		ORDER BY EMPLOYEE_ID DESC
 		
 	<![CDATA[ ) a WHERE ROWNUM <= #{svo.end} ) b WHERE rn >= #{svo.start} ]]>
 	</select>
@@ -109,4 +116,6 @@
 	WHERE e.department_id IS NOT NULL
 	GROUP BY e.department_id, d.department_name
 	</select>
+	
+
 </mapper>

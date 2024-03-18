@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+<title>replyMng.html(CRUD)</title>
+
+
+<script onload="defer">
+	// 페이지 로드하자 마자 함수 호출
+	listReq();
+
+	// 리스트 요청
+	function listReq() {
+		fetch('/reply/list')
+		.then(res => res.json())
+		.then(res => {
+			console.log(res);
+			listRes(res);
+		})		
+	}
+	
+	// 리스트 응답
+	function listRes(res) {
+		console.log(res)
+		/*
+		res.forEach((item, idx) => {
+			
+			let newTag = 
+				`<tr>
+					<td>${idx+1}</td>
+					<td onclick="infoReq(${item.employeeId})">${item.employeeId}</td>
+					<td>${item.firstName} ${item.lastName}</td>
+					<td>${item.hireDate}</td>
+					<td>${item.salary}</td>
+					<td>${item.email}</td>
+					<td>
+						${bonusBtn}
+					</td>
+					<td>
+						<button type="button" onclick="move(${item.employeeId})">조회</button>
+					</td>
+				</tr>`;
+				
+			empList.innerHTML += newTag;
+		})
+		*/
+	}
+
+	
+</script>
+
+
+</head>
+<body>
+<div layout:fragment="content">
+	<h3>댓글목록조회</h3>
+		<div>
+			<table border="1">
+				<thead>
+					<tr>
+						<th>No.</th>
+						<th>bno</th>
+						<th>rno</th>
+						<th>reply</th>
+						<th>replyer</th>
+						<th>replyDate</th>
+						<th>updateDate</th>
+						<th>수정/삭제</th>
+					</tr>
+				</thead>
+				<tbody id="replyList">
+									
+				</tbody>
+			</table>
+		</div>
+	
+	<!-- 
+	<h3>사원(등록, 조회)</h3>
+	<form method="post" name="frm">
+		lastName<input name="lastName">
+		hireDate<input name="hireDate">
+		jobId<select name="jobId">
+			<option value="IT_PROG">Programmer</option>
+			<option value="ST_MAN">Stock Manager</option>
+		</select>
+		이메일<input name="email">
+		<button type="button" onclick="saveReq()">등록</button>
+	</form>
+	 -->
+	
+	
+	<br>
+	<div class="footerSector" th:insert="~{footer}">여기에 삽입</div>
+</div>
+</body>
+</html>

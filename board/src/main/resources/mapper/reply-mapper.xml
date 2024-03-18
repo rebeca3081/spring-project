@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.board.mapper.ReplyMapper">
+	
+	<select id="getReplyList" resultType="ReplyVO">
+		SELECT * FROM ( SELECT ROWNUM AS rn, a.* FROM ( 
+			SELECT RNO
+				, BNO
+				, REPLY
+				, REPLYER
+				, REPLYDATE
+				, UPDATEDATE
+			FROM tbl_reply
+            <include refid="searchCondi"></include>
+            ORDER BY REPLYDATE
+	<![CDATA[ ) a WHERE ROWNUM <= #{ssvo.end} ) b WHERE rn >= #{ssvo.start} ]]>
+	</select>
+	
+	<select id="getReplyInfo" parameterType="int" resultType="ReplyVO">
+		SELECT RNO
+				, BNO
+				, REPLY
+				, REPLYER
+				, REPLYDATE
+				, UPDATEDATE
+		FROM tbl_reply
+		WHERE RNO = #{rno}
+	</select>
+	
+	<insert id="replyInsert" parameterType="ReplyVO">
+		<selectKey keyProperty="rno"
+					order="BEFORE"
+					resultType="int">
+			SELECT seq_reply.nextval FROM dual
+		</selectKey>
+		INSERT INTO tbl_reply
+				(
+				  RNO
+				, BNO
+				, REPLY
+				, REPLYER
+				, REPLYDATE
+				, UPDATEDATE
+				)
+		VALUES(
+				#{rno}
+				, #{bno}
+				, #{reply}
+				, #{replyer}
+			<if test="replyDate != null">
+				, #{replyDate}
+			</if>
+			<if test="updateDate != null">
+				, #{updateDate}
+			</if>
+				)
+	</insert>
+	
+	<update id="replyUpdate" parameterType="ReplyVO">
+		UPDATE tbl_reply
+		SET reply = #{reply}
+		WHERE RNO = #{rno}
+	</update>
+	
+	<delete id="replydelete" parameterType="int">
+		DELETE FROM tbl_reply
+		WHERE RNO = #{rno}
+	</delete>
+	
+	
+</mapper>

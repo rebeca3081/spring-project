@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>update.html</title>
+</head>
+<body>
+	<h2>수정</h2>
+	<form action="/update" method="post">
+		<table border="1">
+			<tr>
+				<th>employee_id</th>
+				<td>
+					<input name="employeeId" th:value="${empInfo.employeeId}" readonly>
+				</td>
+				<th>job_id</th>
+				<td th:text="${empInfo.jobId}"></td>			
+			</tr>
+			<tr>
+				<th>department_id</th>
+				<td th:text="${empInfo.departmentId}"></td>
+				<th>manager_id</th>
+				<td th:text="${empInfo.managerId}"></td>
+			</tr>
+			<tr>
+				<th>full_name</th>	
+				<td>[[${empInfo.firstName}]] [[${empInfo.lastName}]]</td>
+				<th>photo</th>
+				<td>
+					<img th:src="@{/images/{imgName}(imgName = ${empInfo.photo})}" style="width:100px;" th:alt="${empInfo.photo}">
+					<!-- <img th:src="@{file:///D:/upload/{imgName}(imgName = ${emp.photo})}" style="width:100px;"> -->
+				</td>
+			</tr>
+			<tr>
+				<th>이메일</th>
+				<th>phone</th>
+				<th>salary</th>
+				<th>hire_date</th>
+			</tr>
+			<tr>
+				<td>
+					<input name="email" th:value="${empInfo.email}">
+				</td>
+				<td th:text="${empInfo.phone}"></td>
+				<td th:text="${empInfo.salary}"></td>
+				<td th:text="${empInfo.hireDate}"></td>
+				
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align:center;">
+					<button>수정</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+
+</html>
