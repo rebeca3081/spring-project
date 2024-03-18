@@ -5,23 +5,25 @@
 <title>list.html</title>
 </head>
 <body>
-	<h2>사원목록</h2>
-	<a th:href="@{/emp/insert}">사원등록</a>
+	<h2>게시글 목록</h2>
+	<a th:href="@{/board/insert}">게시글 등록</a>
 	<table border="1">
 		<tr>
-			<th>employee_id</th>
-			<th>last_name</th>
-			<th>hire_date</th>
-			<th>photo</th>
+			<th>BOARD_NO</th>
+			<th>TITLE</th>
+			<th>CONTENT</th>
+			<th>WRITER</th>
+			<th>WRITE_DATE</th>
+			<th>CLICK_CNT</th>
 		</tr>
-		<tr th:each="emp : ${empList}" th:onclick="|location.href='@{/emp/info/{id}(id=${emp.employeeId})}'|">
-			<td th:text="${emp.employeeId}"></td>
-			<td th:text="${emp.lastName}"></td>
-			<td th:text="${emp.hireDate}"></td>
-			<td>
-				<img th:src="@{/images/{imgName}(imgName = ${emp.photo})}" style="width:100px;" th:alt="${emp.photo}">
-				<!-- <img th:src="@{file:///D:/upload/{imgName}(imgName = ${emp.photo})}" style="width:100px;"> -->
-			</td>
+		<tr th:each="board : ${boardList}">
+			<td th:text="${board.boardNo}"></td>
+			<td th:text="${board.title}"></td>
+			<td th:text="${board.content}"></td>
+			<td th:text="${board.writer}"></td>
+			<td th:text="${board.writeDate}"></td>
+			<td th:text="${board.clickCnt}"></td>
+			
 		</tr>
 	</table>
 </body>

@@ -13,7 +13,6 @@
 				, REPLYDATE
 				, UPDATEDATE
 			FROM tbl_reply
-            <include refid="searchCondi"></include>
             ORDER BY REPLYDATE
 	<![CDATA[ ) a WHERE ROWNUM <= #{ssvo.end} ) b WHERE rn >= #{ssvo.start} ]]>
 	</select>

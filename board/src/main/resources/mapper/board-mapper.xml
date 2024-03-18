@@ -49,16 +49,13 @@
 			SELECT board_seq.nextval FROM dual
 		</selectKey>
 		INSERT INTO board
-				(board_no
+				(
+				  board_no
 				, title
 				, content
 				, writer
-			<if test="writeDate != null">
-				, write_date)				
-			</if>
-			<if test="writeDate == null">
-				, write_date)				
-			</if>
+				, write_date
+				)
 		VALUES(
 				#{boardNo}
 				, #{title}
