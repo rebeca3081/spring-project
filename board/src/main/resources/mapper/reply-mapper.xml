@@ -40,8 +40,12 @@
 				, BNO
 				, REPLY
 				, REPLYER
+			<if test="replyDate != null">
 				, REPLYDATE
+			</if>
+			<if test="updateDate != null">
 				, UPDATEDATE
+			</if>
 				)
 		VALUES(
 				#{rno}
