@@ -24,28 +24,28 @@
 	// 리스트 응답
 	function listRes(res) {
 		console.log(res)
-		/*
 		res.forEach((item, idx) => {
 			
 			let newTag = 
 				`<tr>
 					<td>${idx+1}</td>
-					<td onclick="infoReq(${item.employeeId})">${item.employeeId}</td>
-					<td>${item.firstName} ${item.lastName}</td>
-					<td>${item.hireDate}</td>
-					<td>${item.salary}</td>
-					<td>${item.email}</td>
+					<td>${item.bno}</td>
+					<td>${item.rno}</td>
+					<td>${item.reply}</td>
+					<td>${item.replyer}</td>
+					<td>${item.replyDate}</td>
+					<td>${item.updateDate}</td>
 					<td>
-						${bonusBtn}
+						<button>수정</button>
+						<button>삭제</button>
 					</td>
 					<td>
-						<button type="button" onclick="move(${item.employeeId})">조회</button>
+						<button type="button" onclick="move(${item.rno})">조회</button>
 					</td>
 				</tr>`;
 				
-			empList.innerHTML += newTag;
+			replyList.innerHTML += newTag;
 		})
-		*/
 	}
 
 	
@@ -91,8 +91,7 @@
 	 -->
 	
 	
-	<br>
-	<div class="footerSector" th:insert="~{footer}">여기에 삽입</div>
+
 </div>
 </body>
 </html>

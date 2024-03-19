@@ -1,6 +1,7 @@
 package com.example.demo.emp.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.common.Paging;
 import com.example.demo.emp.EmpVO;
 import com.example.demo.emp.SearchVO;
-import com.example.demo.emp.mapper.EmpMapper;
+import com.example.demo.emp.service.EmpService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Controller // 컨테이너 빈(Bean) 등록 + 사용자요청처리를 커멘트 핸들러로 변환
 public class EmpController {
 
-	final EmpMapper mapper; // 위존성 주입(DI, dependency Injection)
+	final EmpService empService; // 위존성 주입(DI, dependency Injection)
 	
 	@RequestMapping("/update")
 	@ResponseBody  		// request.getParameter
@@ -35,19 +36,7 @@ public class EmpController {
 		System.out.println(hobby);
 		return "true";
 	}
-	
-	
-	@RequestMapping("/ajaxEmp")
-	@ResponseBody // json 으로 변환
-	public List<EmpVO> ajaxEmp() {
-		return mapper.getEmpList(null, null);
-	}
-	
-	@RequestMapping("/empResult")
-	public String result() {
-		return "result";
-	}
-	
+
 	@RequestMapping("/empList")
 	public String empList(Model model, EmpVO vo, SearchVO svo,Paging pvo){ // Model : 데이터 전달자		
 		//페이징처리
@@ -55,11 +44,14 @@ public class EmpController {
 		pvo.setPageSize(3); // 페이지 번호 수
 		svo.setStart(pvo.getFirst());
 		svo.setEnd(pvo.getLast());
-		pvo.setTotalRecord(mapper.getCount(vo, svo));
+		
+		Map<String, Object> map = empService.getEmpList(vo, svo);
+		
+		pvo.setTotalRecord((Long)map.get("count")); // 전체건수
 		model.addAttribute("paging", pvo);
 		
 		// 목록조회
-		model.addAttribute("empList", mapper.getEmpList(vo, svo)); // reqest.setAttrubte와 동일
+		model.addAttribute("empList", map.get("data")); // 리스트
 		return "empList"; // forward
 	}
 	
@@ -99,20 +91,20 @@ public class EmpController {
 	@GetMapping("/info/{empId}")
 	public String info(@PathVariable int empId, Model model) {
 		System.out.println(empId);
-		model.addAttribute("emp", mapper.getEmpInfo(empId));
+		model.addAttribute("emp", empService.getEmpInfo(empId));
 		return "empInfo";
 	}
 	
 	@GetMapping("/update/{empId}")
 	public String update(@PathVariable int empId) {
 		System.out.println(empId);
-		return "index";
+		return "empInfo";
 	}
 	
 	@GetMapping("/delete")
-	public String delete(int employeeId, String name) {
-		System.out.println(employeeId + " : " + name);
-		return "index";
+	public String delete(int employeeId) {
+		empService.deleteEmp(employeeId);
+		return "redirect:empList";
 	}
 	
 	@GetMapping("/")

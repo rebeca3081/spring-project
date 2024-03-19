@@ -107,9 +107,9 @@
 	</delete>
 	
 	<select id="getStat" resultType="map">
-	SELECT e.department_id
+	SELECT e.department_id "department_id"
 		 , d.department_name "name"
-		 , COUNT(*) AS cnt
+		 , COUNT(*) "cnt"
 	FROM employees e
 		JOIN departments d 
 	    ON e.department_id = d.department_id

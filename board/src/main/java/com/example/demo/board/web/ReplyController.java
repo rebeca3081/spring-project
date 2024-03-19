@@ -22,7 +22,7 @@ public class ReplyController {
 	// 댓글 전체조회 페이지 이동
 	@RequestMapping("/replyMng")
 	public ModelAndView list() {
-		ModelAndView mv = new ModelAndView("replyMng");
+		ModelAndView mv = new ModelAndView("board/replyMng");
 		return mv;
 	}
 	
