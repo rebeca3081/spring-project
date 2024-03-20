@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class EmpController {
 
 	final EmpService empService; // 위존성 주입(DI, dependency Injection)
-	
+		
 	@RequestMapping("/update")
 	@ResponseBody  		// request.getParameter
 	public String update(@RequestParam List<String> hobby) {
@@ -68,11 +68,14 @@ public class EmpController {
 	public ResponseEntity<String> insert2(EmpVO vo) {
 		return new ResponseEntity<>("success", HttpStatus.OK); // 200 성공
 	}
+
+	@GetMapping("/insert")
+	public void insert() {}
 	
 	@PostMapping("/insert") // post인데 get으로 할때(method type이 맞지않을때) 405에러
 	public ModelAndView insert(@ModelAttribute("emp") EmpVO vo, Model model) { // 커멘드 객체는 자동으로 모델에 담김!
 		System.out.println(vo);
-		// mapper.insertEmp(vo); // 등록처리
+		empService.insertEmp(vo); // 등록처리
 		
 		// @ModelAttribute X 기본 -> VO의 첫글자만 소문자로 변환됨
 		// model.addAttribute("empVo", vo);
@@ -82,9 +85,9 @@ public class EmpController {
 		//return "result"; // 페이지 이동
 		
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("result");
+		mv.setViewName("home");
 		mv.addObject("insertResult", "success"); // model.addAttribute();
-		mv.setStatus(HttpStatus.INTERNAL_SERVER_ERROR); // 500 Error 상태값 넘겨줄 수 있음
+		// mv.setStatus(HttpStatus.INTERNAL_SERVER_ERROR); // 500 Error 상태값 넘겨줄 수 있음
 		return mv;
 	}
 	

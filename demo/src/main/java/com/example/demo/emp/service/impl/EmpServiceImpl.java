@@ -19,6 +19,8 @@ public class EmpServiceImpl implements EmpService {
 	
 	@Setter(onMethod_ = @Autowired) // == @Autowired
 	EmpMapper empMapper;
+	
+	// jpa repository 주입해서 사용가능
 
 	@Override
 	public Map<String, Object> getEmpList(EmpVO vo, SearchVO svo) {
