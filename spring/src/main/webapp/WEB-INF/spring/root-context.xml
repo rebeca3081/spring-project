@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- datasource connection pool -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	  <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	  <property name="jdbcUrl"    value="jdbc:oracle:thin:@127.0.0.1:1521:xe" />
+	  <property name="username"   value="hr" />
+	  <property name="password"   value="hr" />
+	  <property name="maximumPoolSize" value="5"></property>
+	</bean>
+	
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" 
+	      destroy-method="close">
+	  <constructor-arg ref="hikariConfig" />
+	</bean>
+	
+	<!-- mybatis  SqlSessionFactory -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+	  <property name="dataSource" ref="dataSource"/>
+	  <property name="mapperLocations" value="classpath*:com/yedam/app/**/mapper/*.xml"></property>
+	</bean>
+	
+	<!-- mapper scan -->
+	<!-- <mybatis-spring:scan base-package="com.yedam.**.mapper" />  -->
+	
+	<!-- sql세션 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+    	<constructor-arg ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	<!-- 컴포넌트 스캔 -->
+	<context:component-scan base-package="com.yedam.app"></context:component-scan>
+	<!-- mapper 스캔 -->
+	<mybatis-spring:scan base-package="com.yedam.app.**.mapper"/>
+	
+	<aop:aspectj-autoproxy />
+	
+	<!-- EmpDAO-->
+	<!-- <bean id="empDAO" class="com.yedam.app.emp.mapper.EmpDAO">  -->
+		<!-- 생성자 주입방식
+		<constructor-arg name="mybatis" ref="sqlSession"></constructor-arg>  -->
+		<!-- setter방식
+		<property name="mybatis" ref="sqlSession" />  -->
+	<!-- </bean> -->
+</beans>
