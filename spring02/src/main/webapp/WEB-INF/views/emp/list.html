@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>list.html</title>
+</head>
+<body>
+	<h2>사원목록</h2>
+	<a th:href="@{/emp/insert}">사원등록</a>
+	<table border="1">
+		<tr>
+			<th>employee_id</th>
+			<th>last_name</th>
+			<th>hire_date</th>
+			<th>photo</th>
+		</tr>
+		<tr th:each="emp : ${empList}" th:onclick="|location.href='@{/emp/info/{id}(id=${emp.employeeId})}'|">
+			<td th:text="${emp.employeeId}"></td>
+			<td th:text="${emp.lastName}"></td>
+			<td th:text="${emp.hireDate}"></td>
+			<td>
+				<img th:src="@{/images/{imgName}(imgName = ${emp.photo})}" style="width:100px;" th:alt="${emp.photo}">
+				<!-- <img th:src="@{file:///D:/upload/{imgName}(imgName = ${emp.photo})}" style="width:100px;"> -->
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>list.html</title>
+</head>
+<body>
+	<h2>사원상세정보</h2>
+	
+	<a th:href="@{/emp/list}">목록으로</a>
+	<table border="1">
+		<tr>
+			<th>employee_id</th>
+			<td th:text="${empInfo.employeeId}"></td>
+			<th>job_id</th>
+			<td th:text="${empInfo.jobId}"></td>			
+		</tr>
+		<tr>
+			<th>department_id</th>
+			<td th:text="${empInfo.departmentId}"></td>
+			<th>manager_id</th>
+			<td th:text="${empInfo.managerId}"></td>
+		</tr>
+		<tr>
+			<th>full_name</th>	
+			<td>[[${empInfo.firstName}]] [[${empInfo.lastName}]]</td>
+			<th>photo</th>
+			<td>
+				<img th:src="@{/images/{imgName}(imgName = ${empInfo.photo})}" style="width:100px;" th:alt="${empInfo.photo}">
+				<!-- <img th:src="@{file:///D:/upload/{imgName}(imgName = ${emp.photo})}" style="width:100px;"> -->
+			</td>
+		</tr>
+		<tr>
+			<th>email</th>
+			<th>phone</th>
+			<th>salary</th>
+			<th>hire_date</th>
+		</tr>
+		<tr>
+			<td th:text="${empInfo.email}"></td>
+			<td th:text="${empInfo.phone}"></td>
+			<td th:text="${empInfo.salary}"></td>
+			<td th:text="${empInfo.hireDate}"></td>
+			
+		</tr>
+		<tr>
+			<td colspan="4" style="text-align:center;">
+				<button><a th:href="@{/emp/delete/{id}(id=${empInfo.employeeId})}">삭제</a></button>
+				<button><a th:href="@{/emp/update(eid=${empInfo.employeeId})}">수정</a></button>
+			</td>
+		</tr>
+	</table>
+	
+</body>
+</html>
